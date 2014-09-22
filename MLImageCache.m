@@ -243,7 +243,7 @@ static char associationKey;
     NSParameterAssert(completion);
     __weak id weakReference = reference;
     NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-        NSData *data = [[NSData alloc] initWithContentsOfURL: imageURL options: 0 error: nil];
+        NSData *data = [[NSData alloc] initWithContentsOfURL: url options: 0 error: nil];
         dispatch_sync(dispatch_get_main_queue(), ^{
             id strongReference = weakReference;
             completion(data,strongReference);
@@ -260,7 +260,7 @@ static char associationKey;
     unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
     
     // Create 16 byte MD5 hash value, store in buffer
-    CC_MD5(data.bytes, data.length, md5Buffer);
+    CC_MD5(data.bytes, (CC_LONG)data.length, md5Buffer);
     
     // Convert unsigned char buffer to NSString of hex values
     NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
@@ -279,7 +279,7 @@ static char associationKey;
     unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
     
     // Create 16 byte MD5 hash value, store in buffer
-    CC_MD5(ptr, strlen(ptr), md5Buffer);
+    CC_MD5(ptr, (CC_LONG)strlen(ptr), md5Buffer);
     
     // Convert MD5 value in the buffer to NSString of hex values
     NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
