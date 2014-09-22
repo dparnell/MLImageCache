@@ -1,7 +1,4 @@
-
 Pod::Spec.new do |s|
-
-
   s.name         = "MLImageCache"
   s.version      = "1.0.1"
   s.summary      = "Simple yet powerful and fast image cache."
@@ -23,9 +20,7 @@ Pod::Spec.new do |s|
                  
                  ## Installation
                    
-                 Use CocoaPods or copy those 4 files directly into the project. In the latter case you also have to install [ASIHTTPRequest](http://allseeing-i.com/ASIHTTPRequest/). 
-                   
-                 If you wonder why do I use this seemingly obsolete library compare its stability and functionality to [AFNetworking](https://github.com/AFNetworking/AFNetworking). It does not change interface every few months and is super-stable and tested. 
+                 Use CocoaPods or copy those 4 files directly into the project.
                    
                  ## How to use it?
                    
@@ -44,6 +39,4 @@ Pod::Spec.new do |s|
    s.source       = { :git => "https://github.com/mll/MLImageCache.git", :tag => "1.0.1" }
    s.source_files  = '*.{h,m}'
    s.requires_arc = true
-   s.dependency 'ASIHTTPRequest', '~> 1.8'
-
 end

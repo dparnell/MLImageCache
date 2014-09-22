@@ -24,7 +24,6 @@ THE SOFTWARE. */
 
 
 #import "MLImageCache.h"
-#import <ASIHttpRequest.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <objc/runtime.h>
 
@@ -244,10 +243,7 @@ static char associationKey;
     NSParameterAssert(completion);
     __weak id weakReference = reference;
     NSOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-        [request startSynchronous];
-        NSError *error = [request error];
-        NSData *data = error?nil:request.responseData;
+        NSData *data = [[NSData alloc] initWithContentsOfURL: imageURL options: 0 error: nil];
         dispatch_sync(dispatch_get_main_queue(), ^{
             id strongReference = weakReference;
             completion(data,strongReference);
