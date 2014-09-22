@@ -73,8 +73,34 @@ static char associationKey;
                [weakSelf.cache removeAllObjects];
            });
         }];
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification
+                                                          object:nil
+                                                           queue:nil
+                                                      usingBlock:^(NSNotification *note) {
+                                                          [weakSelf clearDiskCache:0];
+                                                      }];
+        [[NSNotificationCenter defaultCenter]addObserverForName:UIApplicationDidEnterBackgroundNotification
+                                                         object:nil
+                                                          queue:nil
+                                                     usingBlock:^(NSNotification *note) {
+                                                         [weakSelf clearDiskCache:60*60];
+                                                     }];
     }
     return self;
+}
+
+- (void) clearDiskCache:(int)maxAge
+{
+    NSDate *now = [NSDate date];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *error = nil;
+    for (NSString *file in [fm contentsOfDirectoryAtPath:self.cacheDir error:&error]) {
+        NSDictionary* attrs = [fm attributesOfItemAtPath:[self.cacheDir stringByAppendingPathComponent:file] error:nil];
+        int age = (int)[now timeIntervalSinceDate:(NSDate*)[attrs objectForKey: NSFileCreationDate]];
+        if(age > maxAge && [file rangeOfString:@".dat"].location != NSNotFound){
+            [fm removeItemAtPath:[self.cacheDir stringByAppendingPathComponent:file] error:nil];
+        }
+    }
 }
 
 - (BOOL) cacheImage:(UIImage *)image withUrl:(NSURL *)url
